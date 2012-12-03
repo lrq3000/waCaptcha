@@ -3,6 +3,17 @@ waCaptcha
 
 A 3D Captcha whose goals are to be both fun and useful!
 
+Demo
+----
+
+If you want to try this captcha out for yourself, an online (fake) demo can be found at:
+
+http://wacaptcha.customfields.t15.org/
+
+Please bear in mind that this is only a fake demo to demonstrate an overview usage of the captcha: the captcha images are not generated on the fly and there's no security. Thus you may see twice the same image (there's only a limited set in this demo).
+
+When the real captcha server is working, captcha images are generated on-the-fly and you will never see the same image twice, plus you get a lot more security.
+
 Description
 -----------
 
@@ -10,9 +21,11 @@ Do you know about the game Where's Waldo? Then you will quickly understand how t
 
 It may sound complicated at first, but if you try it, you'll see it's quite easy in fact. Quite easy for humans, that is.
 
-To achieve this goal, the software tries to generate artificial natural scenes, with random parameters. Thus, you will never get the same scene twice.
+The core idea is to exploit the limits of today's algorithms in Computer Vision by generating an artificial natural scene, and assigning a maximum of variance in the 3D scene with random parameters, as opposed to adding variance on a 2D image as usual captchas do.
 
-Secondly, it implements as much image variance as possible, currently:
+There are a lot more parameters in a 3D scene that can be varied than in a 2D image, thus such a scene can be a lot more complex. Moreover, you will never get the same scene twice.
+
+Here is a list of variance that are currently implemented:
 - Rotation
 - Partial obstruction
 - Translation
@@ -70,6 +83,8 @@ MILESTONE1 - BETA1:
 - Optimize a bit the RLE compression code
 - Commandline arguments and main.py file (there's no main for now!)
 - A reload button when the captcha is too hard or too old.
+- Radiometrie variance (histogram background blending of objects)
+- Add more standard security (IP logging, number of retries in a lapse of time, etc..)
 LATER:
 - A lot of other stuffs in my todo, will post them later...
 

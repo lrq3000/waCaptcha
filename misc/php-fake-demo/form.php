@@ -12,10 +12,16 @@ $options = array(
                                 't5' => 'Hardest mode - 4 objects, 320x240, name only',
                             );
 
-$cpath = 'solmasks'.$_SESSION['option'];
+if (empty($_SESSION['option'])) {
+    $tmp = array_keys($options);
+    $cpath = 'solmasks'.$tmp[0];
+    unset($tmp);
+} else {
+    $cpath = 'solmasks'.$_SESSION['option'];
+}
 $solpath = $cpath;
 
-if (!strcmp($_SESSION['option'], 't3')) {
+if (!empty($_SESSION['option']) and !strcmp($_SESSION['option'], 't3')) {
     $width = 800;
     $height = 600;
 } else {
