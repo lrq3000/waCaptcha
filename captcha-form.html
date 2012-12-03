@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas /*, #canvas*/ {
+        /* margin-left: 40px; */
+        /*border: 3px solid #9C9898;*/
+        background: url('solmasks/2b0dd73eb4e58c48b02f7d2f924a0ff.jpg');
+        display: inline-block;
+        overflow: hidden;
+        /*
+        width: 1600px;
+        height: 600px;
+        */
+        /*background-z-index: -1000;*/
+      }
+    </style>
+    <script src="kineticjs-custombuild.js"></script>
+    <!-- <script src="jquery-1.8.2.min.js"></script> -->
+    <script type='text/javascript'>//<![CDATA[ 
+    window.onload=function(){
+        function getPosition(e) {
+
+            //this section is from http://www.quirksmode.org/js/events_properties.html
+            var targ;
+            if (!e)
+                e = window.event;
+            if (e.target)
+                targ = e.target;
+            else if (e.srcElement)
+                targ = e.srcElement;
+            if (targ.nodeType == 3) // defeat Safari bug
+                targ = targ.parentNode;
+
+            // jQuery normalizes the pageX and pageY
+            // pageX,Y are the mouse positions relative to the document
+            // offset() returns the position of the element relative to the document
+            var x = e.pageX - $(targ).offset().left;
+            var y = e.pageY - $(targ).offset().top;
+
+            return {"x": x, "y": y};
+        };
+
+        // now just make sure you use this with jQuery
+        // obviously you can use other events other than click
+        /*
+        $(container).click(function(event) {
+            // jQuery would normalize the event
+            position = getPosition(event);
+            //now you can use the x and y positions
+            alert("X: " + position.x + " Y: " + position.y);
+        });
+        */
+        
+
+        function writeMessage(messageLayer, message) {
+            var context = messageLayer.getContext();
+            messageLayer.clear();
+            context.font = '18pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(message, 10, 25);
+        }
+
+        var stage = new Kinetic.Stage({
+          container: 'container',
+          width: 1600,
+          height: 600
+        });
+        var layer = new Kinetic.Layer();
+        var messageLayer = new Kinetic.Layer();
+        
+        var base = new Kinetic.Rect({
+            x:0,
+            y:0,
+            width:stage.getWidth(),
+            height:stage.getHeight(),
+            stroke:0
+        });
+        
+        var targrect = new Kinetic.Rect({
+            x: -3,
+            y: -3,
+            width: 6,
+            height: 6,
+            stroke: 'blue',
+            strokeWidth: 2
+        });
+
+        var targcircle = new Kinetic.Circle({
+          x: 0,
+          y: 0,
+          radius: 20,
+          stroke: 'red',
+          strokeWidth: 7,
+          draggable: true
+        });
+        
+        var target = new Kinetic.Group({
+            draggable: true
+        });
+        
+        target.add(targrect);
+        target.add(targcircle);
+        
+        /*
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          var yoda = new Kinetic.Image({
+            x: 140,
+            y: stage.getHeight() / 2 - 59,
+            image: imageObj,
+            width: 106,
+            height: 118
+          });
+        };
+        
+        
+        
+        imageObj.src = "http://www.html5canvastutorials.com/demos/assets/yoda.jpg";
+        */
+        
+        /*
+        stage.getContainer().addEventListener('mousemove', function(event) {
+            position = getPosition(event);
+            writeMessage(messageLayer, 'X: '+position.x+' Y: '+position.y);
+        });
+        
+        stage.getContainer().addEventListener('mouseout', function(evt) {
+        	writeMessage(messageLayer, '');
+        });
+        */
+        
+        base.on('mousemove', function() {
+            var mousePos = stage.getMousePosition();
+            var x = mousePos.x;
+            var y = mousePos.y;
+            writeMessage(messageLayer, 'x: ' + x + ', y: ' + y);
+        });
+        
+        base.on('mousedown tap', function() {
+            var mousePos = stage.getMousePosition();
+            var x = mousePos.x - target.getX();
+            var y = mousePos.y - target.getY();
+            var x = mousePos.x - target.getX();
+            var y = mousePos.y - target.getY();
+            layer.clear();
+            target.move(x,y);
+            layer.draw();
+            document.getElementById("csol").value = target.getX() + ":" + target.getY();
+        });
+        
+        target.on('dragend', function() {
+            var mousePos = stage.getMousePosition();
+            document.getElementById("csol").value = target.getX() + ":" + target.getY();
+        });
+        
+        
+        layer.add(base);
+        layer.add(target);
+        base.moveToTop();
+        target.moveToTop();
+        //base.moveToTop(); // move the base to the top, else the we won't be able to move the target when it's to close to where we click (because the target will be over the base, and thus the base won't get triggered by the mouse event). This may be a good idea to remove this if we prefet to rely on the draggable for little moves rather than clicking, but here we prefer clicking.
+
+        stage.add(layer);
+        //stage.add(messageLayer); // WARNING: if this is enable and the css background image too, only the last layer will be rendered! So disable css background image when testing coordinates, or comment this line in production!
+    
+    }//]]>  
+    </script>
+  </head>
+  <body>
+    <form action="img.php" method="post" enctype="application/x-www-form-urlencoded">
+        <noscript>
+            <input type="image" name="nojs_csol" src="test.jpg" title="Click on the reference object to pass the captcha test" alt="Click on the reference object to pass the captcha test" />
+            <input type="submit" style="display: none;" /> <!-- For FireFox, else it will automatically add a submit button even when it's not needed. //-->
+        </noscript>
+        <div id="container"></div>
+        <input type="text" name="csol" id="csol" value="NULL" />
+    </form>
+  </body>
+</html>
