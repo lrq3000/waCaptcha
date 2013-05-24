@@ -8,7 +8,7 @@ Demo
 
 If you want to try this captcha out for yourself, an online (fake) demo can be found at:
 
-http://wacaptcha.customfields.t15.org/
+http://customfields.org/wacaptcha/
 
 Please bear in mind that this is only a fake demo to demonstrate an overview usage of the captcha: the captcha images are not generated on the fly and there's no security. Thus you may see twice the same image (there's only a limited set in this demo).
 
